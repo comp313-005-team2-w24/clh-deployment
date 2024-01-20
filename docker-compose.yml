@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  app:
+    image: glad2os/clh-auth
+    container_name: clh-auth
+    ports:
+      - "8080:8080"
+    environment:
+      - JWT_SECRET_TOKEN=ahd8fee2ohboTh8eS9eeyoosaine3ohK
+      - IS_PRODUCTION=false
+      - REDIS_HOST=redis:6379
+      - REDIS_PASSWORD=your_redis_password
+      - REDIS_DB=0
+    depends_on:
+      - redis
+
+  redis:
+    image: "redis:alpine"
+    container_name: redis
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_PASSWORD=your_redis_password 
