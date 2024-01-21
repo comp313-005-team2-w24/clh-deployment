@@ -1,59 +1,67 @@
-# Go Authentication Service
+# CodeLitHub Bookstore
 
-This project provides a basic authentication service using JWT (JSON Web Tokens) for secure token generation and validation, and Redis for user management. It includes functionalities for user creation, token generation, and token validation, with support for gRPC and Protocol Buffers.
+CodeLitHub Bookstore is a comprehensive system providing a suite of services to manage book inventory, sales, and customer interactions. It utilizes gRPC for efficient communication and Redis for high-performance data storage and retrieval.
 
-## Installation
+## Prerequisites
 
-Before installing this project, ensure you have Docker and Docker Compose installed on your system.
+Ensure you have Docker and Docker Compose installed on your system for running the services.
 
-1. Clone the repository:
+## Getting Started
+
+1. Clone the CodeLitHub Bookstore repository:
    ```bash
-   git clone [URL of your repository]
+   git clone [URL of the CodeLitHub Bookstore repository]
    ```
 
-2. Navigate to the project directory:
+2. Change directory to the cloned repository:
    ```bash
-   cd [project directory]
+   cd [directory of the cloned repository]
    ```
 
 ## Building and Running with Docker Compose
 
-This project uses Docker Compose to simplify running the application along with its Redis dependency.
+Docker Compose is used to orchestrate the bookstore application along with its dependencies, such as Redis.
 
-1. To build and start the services, run:
+1. Build and start the services with the following command:
    ```bash
    docker compose up -d
    ```
 
-2. To stop and remove the containers, use:
+2. To stop the services and remove the containers, execute:
    ```bash
    docker compose down
    ```
 
-### Environment Variables
+### Configuration
 
-You can configure the following environment variables in the `docker-compose.yml` file:
+Configure the environment variables in the `docker-compose.yml` file as follows:
 
-- `JWT_SECRET_TOKEN`: Secret token for JWT. Default is `ahd8fee2ohboTh8eS9eeyoosaine3ohK` if not set.
-- `IS_PRODUCTION`: Set to `true` for production environments. Ensure `JWT_SECRET_TOKEN` is set in production.
-- `REDIS_HOST`: The host address of the Redis server.
-- `REDIS_PASSWORD`: Password for Redis server. Default is empty.
-- `REDIS_DB`: Redis database number. Default is `"0"`.
+- `JWT_SECRET_TOKEN`: A secret key for JWT authentication. Set a strong, unique value in production.
+- `REDIS_HOST`: The hostname or IP address of the Redis server.
+- `REDIS_PASSWORD`: The password for accessing Redis. Ensure this is secure in production.
+- `REDIS_DB`: The Redis database number. Defaults to `0`.
+
+## Services
+
+The CodeLitHub Bookstore system consists of the following services:
+
+- **Authentication Service (`clh-auth`)**: Manages user authentication and token generation.
+- **PostgreSQL (`postgres`)**: Stores relational data such as book details and customer information.
+- **Redis (`redis`)**: Caches frequently accessed data for quick retrieval.
+- **Gateway (`clh-gateway`)**: Serves as the entry point for the application, routing requests to appropriate services.
 
 ## Contributing
 
-Contributions are welcome. Please follow these steps to contribute:
+Contributions are welcome. To contribute:
 
 1. Fork the repository.
-2. Create a new branch: `git checkout -b feature-branch-name`.
-3. Make your changes and commit them: `git commit -m 'commit message'`.
-4. Push to the original branch: `git push origin [project name]/[location]`.
-5. Create the pull request.
+2. Create a feature branch: `git checkout -b feature-branch-name`.
+3. Commit your changes: `git commit -m 'Add some feature'`.
+4. Push to the branch: `git push origin feature-branch-name`.
+5. Submit a pull request.
 
-Alternatively, see the GitHub documentation on [creating a pull request](https://help.github.com/articles/creating-a-pull-request/).
+For more information, see [creating a pull request on GitHub](https://help.github.com/articles/creating-a-pull-request/).
 
 ## License
 
 This project is licensed under the GNU General Public License v3.0. See the [LICENSE](LICENSE) file for details.
-```
-
