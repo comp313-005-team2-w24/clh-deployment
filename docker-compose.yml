@@ -12,7 +12,8 @@ services:
       - POSTGRES_PASSWORD=your_password
       - POSTGRES_DB=your_db_name
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
 
   auth:
     image: glad2os/clh-auth
@@ -47,6 +48,12 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U your_username -d your_db_name"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   redis:
     image: "redis:alpine"
