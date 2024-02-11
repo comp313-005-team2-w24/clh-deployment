@@ -2,10 +2,11 @@ version: '3.8'
 
 services:
   bookstore:
-    image: glad2os/clh-bookstore
+    image: glad2os/clh-bookstore:0.3-SNAPSHOT-1ca9327
     container_name: clh-bookstore
     ports:
       - "8082:8082"
+      - "8079:8079"
     environment:
       - POSTGRES_URL=jdbc:postgresql://postgres/your_db_name
       - POSTGRES_USER=your_username
@@ -29,7 +30,7 @@ services:
       - redis
 
   gateway:
-    image: glad2os/clh-gateway
+    image: glad2os/clh-gateway:0.0.2-SNAPSHOT-c205894
     container_name: clh-gateway
     environment:
       - AUTH_SERVICE_ADDRESS=clh-auth
@@ -65,8 +66,50 @@ services:
     volumes:
       - cache:/data
 
+  victoriametrics:
+    image: victoriametrics/victoria-metrics
+    container_name: victoriametrics
+    ports:
+      - "8428:8428"
+    volumes:
+      - victoriametrics_data:/var/lib/victoria-metrics-data
+    command:
+      - '-retentionPeriod=12'
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    depends_on:
+      - victoriametrics
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning/datasources
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/dashboards-json:/var/lib/grafana/dashboards
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: "your_secure_password"
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+
+  vmagent:
+    image: victoriametrics/vmagent
+    container_name: vmagent
+    restart: always
+    command:
+      - '-promscrape.config=/etc/vmagent/config.yml'
+      - '-remoteWrite.url=http://victoriametrics:8428/api/v1/write'
+    volumes:
+      - ./vmagent_config.yml:/etc/vmagent/config.yml
+    depends_on:
+      - victoriametrics
+      
 volumes:
   postgres_data:
     driver: local
   cache:
+    driver: local
+  victoriametrics_data:
+    driver: local
+  grafana_data:
     driver: local
