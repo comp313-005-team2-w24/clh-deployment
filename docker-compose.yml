@@ -103,7 +103,7 @@ services:
       - ./vmagent_config.yml:/etc/vmagent/config.yml
     depends_on:
       - victoriametrics
-      
+    
 volumes:
   postgres_data:
     driver: local
