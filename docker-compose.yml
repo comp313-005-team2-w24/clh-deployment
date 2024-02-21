@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   bookstore:
-    image: glad2os/clh-bookstore:0.3-SNAPSHOT-1ca9327
+    image: glad2os/clh-bookstore:latest
     container_name: clh-bookstore
     ports:
       - "8082:8082"
@@ -17,7 +17,7 @@ services:
         condition: service_healthy
 
   auth:
-    image: glad2os/clh-auth
+    image: glad2os/clh-auth:latest
     container_name: clh-auth
     ports:
       - "8080:8080"
@@ -26,11 +26,12 @@ services:
       - REDIS_HOST=redis:6379
       - REDIS_PASSWORD=your_redis_password
       - REDIS_DB=0
+      - ADMIN_TOKEN=Owu1boochiixaivooW1laipheidohm7o
     depends_on:
       - redis
 
   gateway:
-    image: glad2os/clh-gateway:0.0.2-SNAPSHOT-c205894
+    image: glad2os/clh-gateway:latest
     container_name: clh-gateway
     environment:
       - AUTH_SERVICE_ADDRESS=clh-auth
