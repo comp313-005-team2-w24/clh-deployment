@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clh-auth
+  namespace: default
+  labels:
+    app: clh-auth
+spec:
+  selector:
+    matchLabels:
+      app: clh-auth
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: clh-auth
+    spec:
+      containers:
+      - name: clh-auth
+        image: glad2os/clh-auth:latest
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 100m
+            memory: 100Mi
+        env:
+        - name: JWT_SECRET_TOKEN
+          value: "ahd8fee2ohboTh8eS9eeyoosaine3ohK"
+        - name: REDIS_HOST
+          value: "redis-svc.default.svc.cluster.local:6379"
+        - name: REDIS_PASSWORD
+          value: "your_redis_password"
+        - name: REDIS_DB
+          value: "0"
+        - name: ADMIN_TOKEN
+          value: "Owu1boochiixaivooW1laipheidohm7o"
+        ports:
+        - containerPort: 8080
+          name: clh-auth
+      restartPolicy: Always
